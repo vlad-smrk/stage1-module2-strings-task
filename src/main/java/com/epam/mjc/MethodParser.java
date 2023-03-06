@@ -49,7 +49,9 @@ public class MethodParser {
             arguments.add(new MethodSignature.Argument(type, name));
         }
         MethodSignature parsedSignature = new MethodSignature(methodName, arguments);
-        parsedSignature.setAccessModifier(accessModifier.lowercaseName());
+        if(accessModifier != AccessModifier.DEFAULT){
+            parsedSignature.setAccessModifier(accessModifier.lowercaseName());
+        }
         parsedSignature.setReturnType(returnType);
         return parsedSignature;
     }
