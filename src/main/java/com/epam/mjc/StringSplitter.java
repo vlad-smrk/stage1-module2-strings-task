@@ -15,7 +15,7 @@ public class StringSplitter {
      * @return List of substrings
      */
     public List<String> splitByDelimiters(String source, Collection<String> delimiters) {
-        StringJoiner regex = new StringJoiner("|");
+        StringJoiner regex = new StringJoiner("|", "(", ")+");
         for (String delimiter : delimiters) {
             regex.add(delimiter);
         }

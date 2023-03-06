@@ -24,7 +24,7 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        List<String> tokens = new StringSplitter().splitByDelimiters(signatureString, List.of(" ", "(", ")", ","));
+        List<String> tokens = new StringSplitter().splitByDelimiters(signatureString, List.of(" ", "\\(", "\\)", ","));
         AccessModifier accessModifier;
         switch (tokens.get(0)) {
             case "private": accessModifier = AccessModifier.PRIVATE;
