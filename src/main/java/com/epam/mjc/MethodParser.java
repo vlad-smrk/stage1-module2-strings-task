@@ -1,5 +1,9 @@
 package com.epam.mjc;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class MethodParser {
 
     /**
@@ -20,6 +24,44 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        throw new UnsupportedOperationException("You should implement this method.");
+        List<String> tokens = new StringSplitter().splitByDelimiters(signatureString, List.of(" ", "(", ")", ","));
+        AccessModifier accessModifier;
+        switch (tokens.get(0)) {
+            case "private": accessModifier = AccessModifier.PRIVATE;
+            break;
+            case "protected": accessModifier = AccessModifier.PROTECTED;
+            break;
+            case "public": accessModifier = AccessModifier.PUBLIC;
+            break;
+            default: accessModifier = AccessModifier.DEFAULT;
+            break;
+        }
+        Iterator<String> iterator = tokens.iterator();
+        if (accessModifier != AccessModifier.DEFAULT) {
+            iterator.next();
+        }
+        String returnType = iterator.next();
+        String methodName = iterator.next();
+        List<MethodSignature.Argument>  arguments = new ArrayList<>();
+        while (iterator.hasNext()) {
+            String type = iterator.next();
+            String name = iterator.next();
+            arguments.add(new MethodSignature.Argument(type, name));
+        }
+        MethodSignature parsedSignature = new MethodSignature(methodName, arguments);
+        parsedSignature.setAccessModifier(accessModifier.lowercaseName());
+        parsedSignature.setReturnType(returnType);
+        return parsedSignature;
+    }
+
+    private enum AccessModifier {
+        PRIVATE,
+        DEFAULT,
+        PROTECTED,
+        PUBLIC;
+
+        String lowercaseName() {
+            return name().toLowerCase();
+        }
     }
 }
